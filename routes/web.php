@@ -72,7 +72,3 @@ Route::group([ "middleware" => ['auth'] ], function() {
 
     Route::view('/admin/user/profile', "admin.profile.show")->name('profile');
 });
-
-Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
