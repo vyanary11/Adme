@@ -26,7 +26,8 @@ Route::get('/', function(){
 });
 Route::group([ "middleware" => ['auth'] ], function() {
     Route::get('/dashboard', [Dashboard::class, "index"])->name('dashboard');
-    foreach (MenuRoute::with("permission","permission.permission")->where('type','!=',null)->get() as $menu_route) {
+    foreach (MenuRoute::with("permission","permission.permission")->get() as $menu_route) {
+        $middleware=[];
         $permissions=null;
         foreach ($menu_route->permission as $has_permission) {
             if ($permissions==null) {
@@ -35,7 +36,10 @@ Route::group([ "middleware" => ['auth'] ], function() {
                 $permissions = $permissions."|".$has_permission->permission->name;
             }
         }
-        //dd(explode(",", $menu_route->parameter));
+        if ($permissions!=null) {
+            array_push($middleware, $permissions);
+        }
+        // dd(explode(",", $menu_route->parameter));
         if($menu_route->type=="get"){
             if($menu_route->name!=null){
                 Route::get($menu_route->url, explode(",", $menu_route->parameter))->name($menu_route->name)->middleware([$permissions]);
