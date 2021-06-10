@@ -39,36 +39,39 @@ Route::group([ "middleware" => ['auth'] ], function() {
         if ($permissions!=null) {
             array_push($middleware, $permissions);
         }
+        if ($menu_route->is_ajax=="yes") {
+            array_push($middleware, 'isAjaxRequest');
+        }
         // dd(explode(",", $menu_route->parameter));
         if($menu_route->type=="get"){
             if($menu_route->name!=null){
-                Route::get($menu_route->url, explode(",", $menu_route->parameter))->name($menu_route->name)->middleware([$permissions]);
+                Route::get($menu_route->url, explode(",", $menu_route->parameter))->name($menu_route->name)->middleware($middleware);
             }else{
-                Route::get($menu_route->url, explode(",", $menu_route->parameter))->middleware([$permissions]);
+                Route::get($menu_route->url, explode(",", $menu_route->parameter))->middleware($middleware);
             }
         }elseif($menu_route->type=="post"){
             if($menu_route->name!=null){
-                Route::post($menu_route->url, explode(",", $menu_route->parameter))->name($menu_route->name)->middleware([$permissions]);
+                Route::post($menu_route->url, explode(",", $menu_route->parameter))->name($menu_route->name)->middleware($middleware);
             }else{
-                Route::post($menu_route->url, explode(",", $menu_route->parameter))->middleware([$permissions]);
+                Route::post($menu_route->url, explode(",", $menu_route->parameter))->middleware($middleware);
             }
         }elseif($menu_route->type=="put"){
             if($menu_route->name!=null){
-                Route::put($menu_route->url, explode(",", $menu_route->parameter))->name($menu_route->name)->middleware([$permissions]);
+                Route::put($menu_route->url, explode(",", $menu_route->parameter))->name($menu_route->name)->middleware($middleware);
             }else{
-                Route::put($menu_route->url, explode(",", $menu_route->parameter))->middleware([$permissions]);
+                Route::put($menu_route->url, explode(",", $menu_route->parameter))->middleware($middleware);
             }
         }elseif($menu_route->type=="delete"){
             if($menu_route->name!=null){
-                Route::put($menu_route->url, explode(",", $menu_route->parameter))->name($menu_route->name)->middleware([$permissions]);
+                Route::put($menu_route->url, explode(",", $menu_route->parameter))->name($menu_route->name)->middleware($middleware);
             }else{
-                Route::put($menu_route->url, explode(",", $menu_route->parameter))->middleware([$permissions]);
+                Route::put($menu_route->url, explode(",", $menu_route->parameter))->middleware($middleware);
             }
         }elseif ($menu_route->type=="view") {
             if($menu_route->name!=null){
-                Route::view($menu_route->url, $menu_route->parameter)->name($menu_route->name)->middleware([$permissions]);
+                Route::view($menu_route->url, $menu_route->parameter)->name($menu_route->name)->middleware($middleware);
             }else{
-                Route::view($menu_route->url, $menu_route->parameter)->middleware([$permissions]);
+                Route::view($menu_route->url, $menu_route->parameter)->middleware($middleware);
             }
 
         }

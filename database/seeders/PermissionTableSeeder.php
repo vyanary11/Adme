@@ -160,6 +160,15 @@ class PermissionTableSeeder extends Seeder
             [
                 'model'         => null,
                 'model_id'      => null,
+                'name'          => 'admin-section-menu.data-table',
+                'url'           => '/admin/admin-section-menu/get-data',
+                'parameter'     => 'App\Http\Controllers\Dashboard\AdminSectionMenuController,getData',
+                'type'          => 'get',
+                'is_ajax'       => 'yes',
+            ],
+            [
+                'model'         => null,
+                'model_id'      => null,
                 'name'          => null,
                 'url'           => '/admin/admin-section-menu/new/',
                 'parameter'     => 'App\Http\Controllers\Dashboard\AdminSectionMenuController,save',
