@@ -16,7 +16,6 @@ class CreateTableAdminSectionMenus extends Migration
         Schema::create('admin_section_menus', function (Blueprint $table) {
             $table->id();
             $table->string("name", "32");
-            $table->timestamps();
         });
     }
 

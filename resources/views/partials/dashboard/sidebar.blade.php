@@ -1,12 +1,12 @@
 @php
-use App\Models\AdminSectionMenu;
-use App\Models\MenuRoute;
-$user=auth()->user();
-$permissions = $user->getAllPermissions();
-$permission_id = array();
-foreach ($permissions as $permission) {
-    array_push($permission_id, $permission->id);
-}
+    use App\Models\AdminSectionMenu;
+    use App\Models\MenuRoute;
+    $user=auth()->user();
+    $permissions = $user->getAllPermissions();
+    $permission_id = array();
+    foreach ($permissions as $permission) {
+        array_push($permission_id, $permission->id);
+    }
 @endphp
     <aside id="sidebar-wrapper" class="pb-5">
         <div class="sidebar-brand">
@@ -23,9 +23,9 @@ foreach ($permissions as $permission) {
                 <a class="nav-link" href="{{ route('dashboard') }}"><i class="fas fa-fire"></i><span>{{ __('Dashboard') }}</span></a>
             </li>
 
-            @foreach (AdminSectionMenu::get_admin_menus($permission_id) as $admin_section_menu)
+            @foreach (AdminSectionMenu::getAdminMenuses($permission_id) as $admin_section_menu)
                 <li class="menu-header">{{$admin_section_menu->name}}</li>
-                @foreach ($admin_section_menu->admin_menus as $admin_menu)
+                @foreach ($admin_section_menu->adminMenuses as $admin_menu)
                     @if ($admin_menu->href!=null)
                         <li class="{{ Request::segment(2) == $admin_menu->href ? 'active' : '' }}">
                             <a class="nav-link" href="{{ route($admin_menu->href) }}"><i class="{{ $admin_menu->icon }}"></i><span>{{ $admin_menu->name }}</span></a>

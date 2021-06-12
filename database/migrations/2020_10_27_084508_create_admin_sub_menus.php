@@ -14,10 +14,10 @@ class CreateAdminSubMenus extends Migration
     public function up()
     {
         Schema::create('admin_sub_menus', function (Blueprint $table) {
-            $table->unsignedInteger("admin_menu_id");
+            $table->unsignedBigInteger("admin_menu_id");
             $table->string("name","32");
             $table->text("href")->nullable();
-            $table->timestamps();
+            $table->foreign('admin_menu_id')->references('id')->on('admin_menus')->onDelete('cascade');
         });
     }
 

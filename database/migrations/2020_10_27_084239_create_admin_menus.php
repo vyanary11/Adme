@@ -15,11 +15,11 @@ class CreateAdminMenus extends Migration
     {
         Schema::create('admin_menus', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger("admin_section_menu_id");
+            $table->unsignedBigInteger("admin_section_menu_id");
             $table->string("name", "100");
             $table->string("icon", "100");
             $table->text("href")->nullable();
-            $table->timestamps();
+            $table->foreign('admin_section_menu_id')->references('id')->on('admin_section_menus')->onDelete('cascade');
         });
     }
 

@@ -21,6 +21,7 @@ class CreateDeveloperUserSeeder extends Seeder
         $dev = User::create([
             'first_name' => 'Vyan',
             'last_name' => 'Ary Pratama',
+            'username' => 'vyandev',
             'email' => 'vyanaryprabowo9763@gmail.com',
             'password' => Hash::make("vyanary11")
         ]);
@@ -33,6 +34,7 @@ class CreateDeveloperUserSeeder extends Seeder
         $admin = User::create([
             'first_name' => 'Vyan',
             'last_name' => 'admin',
+            'username' => 'vyanadmin',
             'email' => 'vyanadmin@gmail.com',
             'password' => Hash::make("vyanary11")
         ]);

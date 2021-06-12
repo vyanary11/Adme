@@ -24,12 +24,13 @@ Auth::routes([
 Route::get('/', function(){
     return redirect(route('dashboard'));
 });
-Route::group([ "middleware" => ['auth'] ], function() {
-    Route::get('/dashboard', [Dashboard::class, "index"])->name('dashboard');
-    foreach (MenuRoute::with("permission","permission.permission")->get() as $menu_route) {
+Route::group(['prefix' => 'dashboard',"middleware" => ['auth'] ], function() {
+    Route::get('/', [Dashboard::class, "index"])->name('dashboard');
+    // dd(MenuRoute::with("permissions","permissions.permission")->get());
+    foreach (MenuRoute::with("permissions","permissions.permission")->get() as $menu_route) {
         $middleware=[];
         $permissions=null;
-        foreach ($menu_route->permission as $has_permission) {
+        foreach ($menu_route->permissions as $has_permission) {
             if ($permissions==null) {
                 $permissions='permission:'.$has_permission->permission->name;
             }else{
@@ -42,7 +43,7 @@ Route::group([ "middleware" => ['auth'] ], function() {
         if ($menu_route->is_ajax=="yes") {
             array_push($middleware, 'isAjaxRequest');
         }
-        // dd(explode(",", $menu_route->parameter));
+        // dd($middleware);
         if($menu_route->type=="get"){
             if($menu_route->name!=null){
                 Route::get($menu_route->url, explode(",", $menu_route->parameter))->name($menu_route->name)->middleware($middleware);

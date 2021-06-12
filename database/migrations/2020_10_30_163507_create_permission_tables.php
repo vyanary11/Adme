@@ -52,10 +52,7 @@ class CreatePermissionTables extends Migration  {
             ->references('id')
             ->on($tableNames['permissions'])
             ->onDelete('cascade');
-            $table->foreign('role_id')
-            ->references('id')
-            ->on($tableNames['roles'])
-            ->onDelete('cascade');
+            $table->foreign('role_id')->references('id')->on($tableNames['roles'])->onDelete('cascade');
             $table->primary(['permission_id', 'role_id']);
         });
 
@@ -64,30 +61,19 @@ class CreatePermissionTables extends Migration  {
             $table->unsignedBigInteger('admin_menu_id');
             $table->string('model')->nullable();
             $table->unsignedBigInteger('model_id')->nullable();
-            $table->unsignedInteger('permission_id');
             $table->string('name')->nullable();
             $table->text('url');
             $table->text('parameter');
             $table->enum('type',['view','get','post','delete','put']);
             $table->enum('is_ajax',['yes','no'])->default('no');
-            $table->timestamps();
-            $table->foreign('permission_id')
-            ->references('id')
-            ->on('permissions')
-            ->onDelete('cascade');
+            $table->foreign('admin_menu_id')->references('id')->on('admin_menus')->onDelete('cascade');
         });
 
         Schema::create('menu_route_has_permissions', function (Blueprint $table) use ($tableNames) {
             $table->integer('permission_id')->unsigned();
             $table->bigInteger('menu_route_id')->unsigned();
-            $table->foreign('permission_id')
-            ->references('id')
-            ->on($tableNames['permissions'])
-            ->onDelete('cascade');
-            $table->foreign('menu_route_id')
-            ->references('id')
-            ->on('menu_routes')
-            ->onDelete('cascade');
+            $table->foreign('permission_id')->references('id')->on($tableNames['permissions'])->onDelete('cascade');
+            $table->foreign('menu_route_id')->references('id')->on('menu_routes')->onDelete('cascade');
             $table->primary(['permission_id', 'menu_route_id']);
             app('cache')->forget('spatie.permission.cache');
         });

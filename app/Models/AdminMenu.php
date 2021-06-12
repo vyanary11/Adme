@@ -2,39 +2,59 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-
+/**
+ * @property integer $id
+ * @property integer $admin_section_menu_id
+ * @property string $name
+ * @property string $icon
+ * @property string $href
+ * @property AdminSectionMenu $adminSectionMenu
+ * @property AdminSubMenu[] $adminSubMenuses
+ * @property MenuRoute[] $menuRoutes
+ */
 class AdminMenu extends Model
 {
-    use HasFactory;
+    public $timestamps = false;
+    /**
+     * The "type" of the auto-incrementing ID.
+     *
+     * @var string
+     */
+    protected $keyType = 'integer';
 
-    public function admin_section_menu()
+    /**
+     * @var array
+     */
+    protected $fillable = ['admin_section_menu_id', 'name', 'icon', 'href'];
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function adminSectionMenu()
     {
-        return $this->hasOne(AdminSectionMenu::class);
+        return $this->belongsTo('App\Models\AdminSectionMenu');
     }
 
-    public function menus()
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function adminSubMenuses()
     {
-        return $this->morphMany(MenuRoute::class, 'menu_or_submenu','model','model_id');
+        return $this->hasMany('App\Models\AdminSubMenu');
     }
 
-    public function menu_routes()
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function menuRoutes()
     {
-        return $this->hasMany(MenuRoute::class);
+        return $this->hasMany('App\Models\MenuRoute');
     }
 
-    public function admin_sub_menus()
+    public function menuses()
     {
-        return $this->hasMany(AdminSubMenu::class);
-    }
-
-    public static function search($query)
-    {
-        return empty($query) ? static::query()
-            : static::where('name', 'like', '%'.$query.'%');
+        return $this->morphMany('App\Models\MenuRoute', 'menu_or_submenu','model','model_id');
     }
 }
-
-
